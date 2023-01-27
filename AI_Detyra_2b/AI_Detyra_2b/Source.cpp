@@ -7,24 +7,30 @@
 #include <set>
 #include <stack>
 #include <tuple>
-
 using namespace std;
 
 typedef pair<int, int> Pair;
 typedef tuple<double, int, int> Tuple;
+
 struct cell {
 
 	Pair parent;
 
 	double f, g, h;
 	cell()
-		: parent(-1, -1)
-		, f(-1)
-		, g(-1)
-		, h(-1)
-	{
-	}
+		: parent(-1, -1), f(-1), g(-1), h(-1){}
 };
+
+template <size_t ROW, size_t COL>
+bool isValid(const array<array<int, COL>, ROW>& grid, const Pair& point)
+{
+	if (ROW > 0 && COL > 0)
+		return (point.first >= 0) && (point.first < ROW)
+		&& (point.second >= 0)
+		&& (point.second < COL);
+
+	return false;
+}
 
 template <size_t ROW, size_t COL>
 bool isUnBlocked(const array<array<int, COL>, ROW>& grid, const Pair& point)
