@@ -122,6 +122,17 @@ void aStarSearch(const array<array<int, COL>, ROW>& grid,
 
 	openList.emplace(0.0, i, j);
 
+	while (!openList.empty()) {
+		const Tuple& p = openList.top();
+		i = get<1>(p); // second element of tuple
+		j = get<2>(p); // third element of tuple
+
+		// Remove this vertex from the open list
+		openList.pop();
+		closedList[i][j] = true;
+		for (int add_x = -1; add_x <= 1; add_x++) {}
+	}
+
 	printf("Failed to find the Destination Cell\n");
 }
 
