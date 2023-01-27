@@ -1,9 +1,10 @@
 #include <iostream>
 #include <queue>
-typedef pair<int, int> Pair;
-typedef tuple<double, int, int> Tuple;
 
 using namespace std;
+
+typedef pair<int, int> Pair;
+typedef tuple<double, int, int> Tuple;
 struct cell {
 
 	Pair parent;
@@ -17,6 +18,18 @@ struct cell {
 	{
 	}
 };
+
+template <size_t ROW, size_t COL>
+bool isUnBlocked(const array<array<int, COL>, ROW>& grid, const Pair& point)
+{
+	return isValid(grid, point)
+		&& grid[point.first][point.second] == 1;
+}
+
+bool isDestination(const Pair& position, const Pair& dest)
+{
+	return position == dest;
+}
 int main() {
 
 	cout << "Working fine" << endl;
