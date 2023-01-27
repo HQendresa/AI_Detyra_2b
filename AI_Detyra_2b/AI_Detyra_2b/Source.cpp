@@ -130,7 +130,31 @@ void aStarSearch(const array<array<int, COL>, ROW>& grid,
 		// Remove this vertex from the open list
 		openList.pop();
 		closedList[i][j] = true;
-		for (int add_x = -1; add_x <= 1; add_x++) {}
+		for (int add_x = -1; add_x <= 1; add_x++) {
+			for (int add_y = -1; add_y <= 1; add_y++) {
+				Pair neighbour(i + add_x, j + add_y);
+				// Only process this cell if this is a valid
+				// one
+				if (isValid(grid, neighbour)) {
+
+					if (isDestination(
+						neighbour,
+						dest)) {
+
+						cellDetails[neighbour.first]
+							[neighbour.second]
+						.parent
+							= { i, j };
+						printf("The destination cell is "
+							"found\n");
+						tracePath(cellDetails, dest);
+						return;
+					}
+
+					
+				}
+			}
+		}
 	}
 
 	printf("Failed to find the Destination Cell\n");
