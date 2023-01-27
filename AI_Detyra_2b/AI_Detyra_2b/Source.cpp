@@ -215,5 +215,10 @@ int main() {
 		{ { 1, 1, 1, 0, 0, 0, 1, 0, 0, 1 } } }
 	};
 
+	Pair src(8, 0);
+	Pair dest(0, 0);
+
+	aStarSearch(grid, src, dest);
+
 	return 0;
 }
