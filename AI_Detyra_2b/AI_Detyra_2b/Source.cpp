@@ -17,17 +17,17 @@ struct cell {
 	Pair parent;
 
 	double f, g, h;
-	cell()
-		: parent(-1, -1), f(-1), g(-1), h(-1){}
+	cell() : parent(-1, -1), f(-1), g(-1), h(-1){}
 };
 
 template <size_t ROW, size_t COL>
 bool isValid(const array<array<int, COL>, ROW>& grid, const Pair& point)
 {
 	if (ROW > 0 && COL > 0)
-		return (point.first >= 0) && (point.first < ROW)
-		&& (point.second >= 0)
-		&& (point.second < COL);
+		return (point.first >= 0) 
+			&& (point.first < ROW)
+			&& (point.second >= 0)
+			&& (point.second < COL);
 
 	return false;
 }
@@ -60,6 +60,7 @@ void tracePath(const array<array<cell, COL>, ROW>& cellDetails, const Pair& dest
 	int row = dest.first;
 	int col = dest.second;
 	Pair next_node = cellDetails[row][col].parent;
+
 	do {
 		Path.push(next_node);
 		next_node = cellDetails[row][col].parent;
@@ -76,8 +77,7 @@ void tracePath(const array<array<cell, COL>, ROW>& cellDetails, const Pair& dest
 }
 
 template <size_t ROW, size_t COL>
-void aStarSearch(const array<array<int, COL>, ROW>& grid,
-	const Pair& src, const Pair& dest)
+void aStarSearch(const array<array<int, COL>, ROW>& grid, const Pair& src, const Pair& dest)
 {
 	// If the source is out of range
 	if (!isValid(grid, src)) {
@@ -117,8 +117,7 @@ void aStarSearch(const array<array<int, COL>, ROW>& grid,
 	cellDetails[i][j].parent = { i, j };
 
 	std::priority_queue<Tuple, std::vector<Tuple>,
-		std::greater<Tuple> >
-		openList;
+	std::greater<Tuple> > openList;
 
 	openList.emplace(0.0, i, j);
 
@@ -127,70 +126,38 @@ void aStarSearch(const array<array<int, COL>, ROW>& grid,
 		i = get<1>(p); // second element of tuple
 		j = get<2>(p); // third element of tuple
 
-		// Remove this vertex from the open list
 		openList.pop();
 		closedList[i][j] = true;
 		for (int add_x = -1; add_x <= 1; add_x++) {
 			for (int add_y = -1; add_y <= 1; add_y++) {
 				Pair neighbour(i + add_x, j + add_y);
 				// Only process this cell if this is a valid
-				// one
+
 				if (isValid(grid, neighbour)) {
 
-					if (isDestination(
-						neighbour,
-						dest)) {
+					if (isDestination(neighbour, dest)) {
 
-						cellDetails[neighbour.first]
-							[neighbour.second]
-						.parent
-							= { i, j };
-						printf("The destination cell is "
-							"found\n");
+						cellDetails[neighbour.first][neighbour.second].parent= { i, j };
+						printf("The destination cell is found\n");
 						tracePath(cellDetails, dest);
 						return;
 					}
 
-					else if (!closedList[neighbour.first]
-						[neighbour.second]
-					&& isUnBlocked(grid,
-						neighbour)) {
+					else if (!closedList[neighbour.first][neighbour.second] && isUnBlocked(grid, neighbour)) {
 						double gNew, hNew, fNew;
 						gNew = cellDetails[i][j].g + 1.0;
-						hNew = calculateHValue(neighbour,
-							dest);
+						hNew = calculateHValue(neighbour, dest);
 						fNew = gNew + hNew;
 
-						if (cellDetails[neighbour.first]
-							[neighbour.second]
-						.f
-							== -1
-							|| cellDetails[neighbour.first]
-							[neighbour.second]
-						.f
-		> fNew) {
-							openList.emplace(
-								fNew, neighbour.first,
-								neighbour.second);
+						if (cellDetails[neighbour.first][neighbour.second].f == -1 || cellDetails[neighbour.first][neighbour.second].f > fNew) {
+							openList.emplace(fNew, neighbour.first, neighbour.second);
 
 							// Update the details of this
 							// cell
-							cellDetails[neighbour.first]
-								[neighbour.second]
-							.g
-								= gNew;
-							cellDetails[neighbour.first]
-								[neighbour.second]
-							.h
-								= hNew;
-							cellDetails[neighbour.first]
-								[neighbour.second]
-							.f
-								= fNew;
-							cellDetails[neighbour.first]
-								[neighbour.second]
-							.parent
-								= { i, j };
+							cellDetails[neighbour.first][neighbour.second].g = gNew;
+							cellDetails[neighbour.first][neighbour.second].h = hNew;
+							cellDetails[neighbour.first][neighbour.second].f = fNew;
+							cellDetails[neighbour.first][neighbour.second].parent = { i, j };
 						}
 					}
 				}
