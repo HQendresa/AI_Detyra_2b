@@ -1,5 +1,12 @@
+#include "math.h"
+#include <array>
+#include <chrono>
+#include <cstring>
 #include <iostream>
 #include <queue>
+#include <set>
+#include <stack>
+#include <tuple>
 
 using namespace std;
 
@@ -60,6 +67,56 @@ void tracePath(const array<array<cell, COL>, ROW>& cellDetails, const Pair& dest
 		Path.pop();
 		printf("-> (%d,%d) ", p.first, p.second);
 	}
+}
+
+template <size_t ROW, size_t COL>
+void aStarSearch(const array<array<int, COL>, ROW>& grid,
+	const Pair& src, const Pair& dest)
+{
+	// If the source is out of range
+	if (!isValid(grid, src)) {
+		printf("Source is invalid\n");
+		return;
+	}
+
+	// If the destination is out of range
+	if (!isValid(grid, dest)) {
+		printf("Destination is invalid\n");
+		return;
+	}
+
+	// Either the source or the destination is blocked
+	if (!isUnBlocked(grid, src)
+		|| !isUnBlocked(grid, dest)) {
+		printf("Source or the destination is blocked\n");
+		return;
+	}
+
+	// If the destination cell is the same as source cell
+	if (isDestination(src, dest)) {
+		printf("We are already at the destination\n");
+		return;
+	}
+
+	bool closedList[ROW][COL];
+	memset(closedList, false, sizeof(closedList));
+
+	array<array<cell, COL>, ROW> cellDetails;
+
+	int i, j;
+	i = src.first, j = src.second;
+	cellDetails[i][j].f = 0.0;
+	cellDetails[i][j].g = 0.0;
+	cellDetails[i][j].h = 0.0;
+	cellDetails[i][j].parent = { i, j };
+
+	std::priority_queue<Tuple, std::vector<Tuple>,
+		std::greater<Tuple> >
+		openList;
+
+	openList.emplace(0.0, i, j);
+
+	printf("Failed to find the Destination Cell\n");
 }
 
 int main() {
