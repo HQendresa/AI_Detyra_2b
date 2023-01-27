@@ -151,7 +151,48 @@ void aStarSearch(const array<array<int, COL>, ROW>& grid,
 						return;
 					}
 
-					
+					else if (!closedList[neighbour.first]
+						[neighbour.second]
+					&& isUnBlocked(grid,
+						neighbour)) {
+						double gNew, hNew, fNew;
+						gNew = cellDetails[i][j].g + 1.0;
+						hNew = calculateHValue(neighbour,
+							dest);
+						fNew = gNew + hNew;
+
+						if (cellDetails[neighbour.first]
+							[neighbour.second]
+						.f
+							== -1
+							|| cellDetails[neighbour.first]
+							[neighbour.second]
+						.f
+		> fNew) {
+							openList.emplace(
+								fNew, neighbour.first,
+								neighbour.second);
+
+							// Update the details of this
+							// cell
+							cellDetails[neighbour.first]
+								[neighbour.second]
+							.g
+								= gNew;
+							cellDetails[neighbour.first]
+								[neighbour.second]
+							.h
+								= hNew;
+							cellDetails[neighbour.first]
+								[neighbour.second]
+							.f
+								= fNew;
+							cellDetails[neighbour.first]
+								[neighbour.second]
+							.parent
+								= { i, j };
+						}
+					}
 				}
 			}
 		}
